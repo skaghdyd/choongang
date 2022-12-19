@@ -159,7 +159,7 @@ class ChartDialog extends JDialog {
 		JTextArea rightChartOpinionArea = new JTextArea();
 		rightChartOpinionArea.setBounds(12, 274, 480, 165);
 		rightChartPanel.add(rightChartOpinionArea);
-		
+
 		/////////////////////////////////////////////////////////////
 		// 이벤트
 		/////////////////////////////////////////////////////////////
@@ -193,17 +193,25 @@ class ChartDialog extends JDialog {
 					return;
 				}
 				try {
-					hospitalDB.insert(date, name, ssn, symptom, opinion);
+					int result = hospitalDB.insert(date, name, ssn, symptom, opinion);
+					if (result == -1) {
+						JOptionPane.showMessageDialog(c, "해당 주민번호로 조회된 회원이 존재하지 않습니다.\n주민번호를 다시 확인해주세요.");
+					} else if (result == -2) {
+						JOptionPane.showMessageDialog(c, "주민번호와 이름이 일치하지 않습니다.\n이름을 다시 확인해주세요.");
+					} else if (result == 0) {
+						JOptionPane.showMessageDialog(c, "차트 입력에 실패하였습니다.\n관리자에게 문의하세요.");
+					} else {
+						JOptionPane.showMessageDialog(null, "저장 완료");
+						leftChartDateField.setText("");
+						leftChartNameField.setText("");
+						leftChartSsnField.setText("");
+						rightChartSymptomArea.setText("");
+						rightChartOpinionArea.setText("");
+						dispose();
+					}
 				} catch (SQLException e1) {
 					e1.printStackTrace();
 				}
-				JOptionPane.showMessageDialog(null, "저장 완료");
-				leftChartDateField.setText("");
-				leftChartNameField.setText("");
-				leftChartSsnField.setText("");
-				rightChartSymptomArea.setText("");
-				rightChartOpinionArea.setText("");
-				dispose();
 			}
 		});
 	}
@@ -217,7 +225,7 @@ public class HospitalProject {
 	private JTable leftSearchTable;
 	private JTextField searchPatientField;
 	private JTable rightSearchTable;
-	final String FILEPATH = "C:\\_dev\\hospitalProject\\src\\hospitalProject\\images\\";
+	final String FILEPATH = ".\\src\\hospitalProject\\images\\";
 	DefaultTableModel leftSearchTableModel = new DefaultTableModel() {
 		@Override
 		public boolean isCellEditable(int row, int column) {
@@ -467,6 +475,7 @@ public class HospitalProject {
 			public void mouseClicked(MouseEvent e) {
 				String ssn = (String) leftSearchTableModel.getValueAt(leftSearchTable.getSelectedRow(), 1);
 				String fileName = (String) leftSearchTableModel.getValueAt(leftSearchTable.getSelectedRow(), 3);
+				System.out.println(FILEPATH + fileName);
 				currentPatientImageLabel.setIcon(new ImageIcon(FILEPATH + fileName));
 				List<Map<String, String>> resultList = null;
 				try {
@@ -713,7 +722,7 @@ public class HospitalProject {
 
 		patientSavButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+
 				String name = patientNameField.getText();
 				String ssn = patientSsnField.getText();
 				String phoneNum = patientPhoneNumField.getText();

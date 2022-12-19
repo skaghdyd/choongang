@@ -113,6 +113,7 @@ class AddUserDialog extends JDialog {
 					} else {
 						JOptionPane.showMessageDialog(c, "해당 아이디로 회원가입이 가능합니다.");
 						idCheck = true;
+						idField.setEditable(false);
 					}
 					
 				} catch (SQLException e1) {

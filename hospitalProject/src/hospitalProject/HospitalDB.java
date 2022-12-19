@@ -88,14 +88,31 @@ public class HospitalDB {
 		return resultList;
 	}
 
-	public void insert(String date, String name, String ssn, String symptom, String opinion) throws SQLException {
+	public int insert(String date, String name, String ssn, String symptom, String opinion) throws SQLException {
 
-		// 환자 이름 주민 체크하는 메소드 필요함..
+		String nameChk = checkSsn(ssn);
+		if(nameChk==null) {
+			//해당 주민으로 조회된 회원이 없으면..
+			return -1;
+		} else if (!nameChk.equals(name)) {
+			//조회된 이름과 입력한 이름이 불일치한 경우..
+			return -2;
+		}
 
 		stmt = conn.createStatement();
 		int result = stmt.executeUpdate("insert into chart " + "values (0,'" + date + "','" + name + "','" + ssn + "','"
 				+ symptom + "','" + opinion + "')");
 		System.out.println("insert " + result + "건 성공");
+		return result; //0 또는 1이 return 됨..
+	}
+
+	private String checkSsn(String ssn) throws SQLException {
+		stmt = conn.createStatement();
+		rs = stmt.executeQuery("select name from patient where ssn = '" + ssn + "'");
+		if(rs.next()) {
+			return rs.getString("name");
+		}
+		return null;
 	}
 
 	public boolean addIdCheck(String id) throws SQLException {
