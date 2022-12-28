@@ -7,6 +7,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class EmpDao {
 	private static EmpDao empDao = new EmpDao();
@@ -88,7 +90,7 @@ public class EmpDao {
 
 		return emp;
 	}
-	
+
 	public List<Emp> selDeptSvg() {
 		List<Emp> list = new ArrayList<Emp>();
 		String sql = "select deptno, job, avg(sal) as avg_sal from emp group by deptno, job order by deptno, job";
@@ -111,17 +113,36 @@ public class EmpDao {
 
 		return list;
 	}
+
 	public static void main(String[] args) {
 		EmpDao ed = EmpDao.getInstance();
 		List<Emp> list = ed.selectAll("a");
 //		for(Emp emp : list) {
 //			System.out.println(emp);
 //		}
-		list.stream()
-			.forEach(e->System.out.println(e));
-		double avg = list.stream()
-						.mapToInt(Emp::getSal)
-						.average()
-						.getAsDouble();
+
+//		list.stream()
+//			.forEach(e->System.out.println(e));
+
+//		double avg = list.stream()
+//						.filter(emp->emp.getDeptno()==10)
+//						.mapToInt(Emp::getSal)
+//						.average()
+//						.getAsDouble();
+//		System.out.println(avg);
+
+//		for (int deptNo : map.keySet()) {
+//			System.out.println(deptNo);
+//			System.out.println(map.get(deptNo));
+//		}
+		Map<Integer, Double> map = list.stream()
+				.collect(Collectors.groupingBy(Emp::getDeptno, Collectors.averagingDouble(Emp::getSal)));
+
+		List<Integer> keyList = new ArrayList<Integer>(map.keySet());
+		keyList.sort((s1, s2) -> s1.compareTo(s2));
+		for (Integer key : keyList) {
+            System.out.println("key: " + key + ", value: " + map.get(key));
+        }
+		
 	}
 }
