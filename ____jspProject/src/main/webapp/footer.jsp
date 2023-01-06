@@ -7,7 +7,7 @@
 <title>Footer</title>
 <style type="text/css">
 #footer_footer {
-	background-image: url('images/footer_bg.gif');
+	/* background-image: url('images/footer_bg.gif'); */
 	width: 100%;
 	text-align: center;
 	height: 200px;

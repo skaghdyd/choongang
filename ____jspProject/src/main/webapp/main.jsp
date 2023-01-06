@@ -17,6 +17,22 @@
 	min-height: 100%;
 	padding-bottom: 200px;
 }
+
+#chatButton {
+	border: 1px solid black;
+	width: 50px;
+	height: 50px;
+}
+
+#chatBox {
+	border: 1px solid black;
+	width: 400px;
+	height: 500px;
+}
+
+#messageWindow, #inputText {
+	border: 1px solid black;
+}
 </style>
 </head>
 <body>
@@ -61,32 +77,20 @@
 				dsjzviopsdisdiajdsjzviopsdisdiajdsjzviopsd<br>
 			</p>
 		</article>
-		<article id="article3">
-			<p>
-				dsjzviopsdisdiajdsjzviopsdisdiajdsjzviopsd<br>
-				dsjzviopsdisdiajdsjzviopsdisdiajdsjzviopsd<br>
-				dsjzviopsdisdiajdsjzviopsdisdiajdsjzviopsd<br>
-				dsjzviopsdisdiajdsjzviopsdisdiajdsjzviopsd<br>
-				dsjzviopsdisdiajdsjzviopsdisdiajdsjzviopsd<br>
-				dsjzviopsdisdiajdsjzviopsdisdiajdsjzviopsd<br>
-				dsjzviopsdisdiajdsjzviopsdisdiajdsjzviopsd<br>
-				dsjzviopsdisdiajdsjzviopsdisdiajdsjzviopsd<br>
-				dsjzviopsdisdiajdsjzviopsdisdiajdsjzviopsd<br>
-			</p>
-		</article>
-		<article id="article4">
-			<p>
-				dsjzviopsdisdiajdsjzviopsdisdiajdsjzviopsd<br>
-				dsjzviopsdisdiajdsjzviopsdisdiajdsjzviopsd<br>
-				dsjzviopsdisdiajdsjzviopsdisdiajdsjzviopsd<br>
-				dsjzviopsdisdiajdsjzviopsdisdiajdsjzviopsd<br>
-				dsjzviopsdisdiajdsjzviopsdisdiajdsjzviopsd<br>
-				dsjzviopsdisdiajdsjzviopsdisdiajdsjzviopsd<br>
-				dsjzviopsdisdiajdsjzviopsdisdiajdsjzviopsd<br>
-				dsjzviopsdisdiajdsjzviopsdisdiajdsjzviopsd<br>
-				dsjzviopsdisdiajdsjzviopsdisdiajdsjzviopsd<br>
-			</p>
-		</article>
+		<div align="right">
+			<div id="chatButton">채팅버튼</div>
+			<div id="chatBox">
+				<div id="messageWindow">
+					<p>1번 채팅</p>
+					<p>2번 채팅</p>
+					<p>3번 채팅</p>
+				</div>
+				<fieldset>
+		            <input id="inputMessage" type="text" onkeyup="enterkey()">
+		            <input type="button" value="send" onclick="send()">
+				</fieldset>
+			</div>
+		</div>
 	</section>
 	<jsp:include page="footer.jsp"></jsp:include>
 </body>
