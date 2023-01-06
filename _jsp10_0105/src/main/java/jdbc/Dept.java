@@ -1,0 +1,38 @@
+package jdbc;
+
+public class Dept {
+	private int deptno;
+	private String dname;
+	private String loc;
+
+	public Dept(int deptNo, String dName, String loc) {
+		super();
+		this.deptno = deptNo;
+		this.dname = dName;
+		this.loc = loc;
+	}
+
+	public int getDeptno() {
+		return deptno;
+	}
+
+	public void setDeptno(int deptno) {
+		this.deptno = deptno;
+	}
+
+	public String getDname() {
+		return dname;
+	}
+
+	public void setDname(String dname) {
+		this.dname = dname;
+	}
+
+	public String getLoc() {
+		return loc;
+	}
+
+	public void setLoc(String loc) {
+		this.loc = loc;
+	}
+}
