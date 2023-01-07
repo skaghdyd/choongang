@@ -29,7 +29,7 @@
 </script>
 <script type="text/javascript">
     var textarea = document.getElementById("messageWindow");
-    var webSocket = new WebSocket('ws://172.30.1.76:8080/__chatProject/broadcasting');
+    var webSocket = new WebSocket('ws://172.30.1.77:8080/__chatProject/broadcasting');
     var inputMessage = document.getElementById('inputMessage');
     webSocket.onerror = function(event) {
         onError(event)
