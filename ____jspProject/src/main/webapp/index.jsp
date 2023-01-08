@@ -105,7 +105,8 @@
 		});
 		
 		var textarea = document.getElementById("messageWindow");
-	    var webSocket = new WebSocket('ws://172.30.1.77:8080/____jspProject/broadcasting');
+	    /* var webSocket = new WebSocket('ws://172.30.1.77:8080/____jspProject/broadcasting'); */
+	    var webSocket = new WebSocket('ws://192.168.0.100:8080/____jspProject/broadcasting');
 	    var inputMessage = document.getElementById('inputMessage');
 	    webSocket.onerror = function(event) {
 	        onError(event)

@@ -1,19 +1,23 @@
+<%@page import="notice.PageVO"%>
 <%@page import="notice.NoticeDto"%>
 <%@page import="java.util.List"%>
 <%@page import="dao.Dao"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%
-int selectedPage = 1; //처음엔 무조건 1페이지
+int currentPage = 1; //처음엔 무조건 1페이지
 
-if (request.getParameter("selectedPage") != null) {
+if (request.getParameter("currentPage") != null) {
 	//선택한 페이지가 있으면 해당 페이지로 변경
-	selectedPage = Integer.parseInt(request.getParameter("selectedPage"));
+	currentPage = Integer.parseInt(request.getParameter("currentPage"));
 }
 
 Dao dao = Dao.getInstance();
 
-List<NoticeDto> noticeList = dao.notice_selectAll(selectedPage);
+List<NoticeDto> noticeList = dao.notice_selectAll(currentPage);
+int totalPost = dao.notice_getTotalPost();
+PageVO pageVO = new PageVO(currentPage, 10, totalPost);
+System.out.println(pageVO.toString());
 %>
 <!DOCTYPE html>
 <html>
@@ -65,35 +69,50 @@ List<NoticeDto> noticeList = dao.notice_selectAll(selectedPage);
 				</thead>
 				<tbody>
 					<%
-						for(NoticeDto noticeDto : noticeList){
-							String createDate = noticeDto.getCreateDate();
-							String year = createDate.substring(0, 4);
-							String month = createDate.substring(4, 6);
-							String date = createDate.substring(6, 8);
+					for (NoticeDto noticeDto : noticeList) {
+						String createDate = noticeDto.getCreateDate();
+						String year = createDate.substring(0, 4);
+						String month = createDate.substring(4, 6);
+						String date = createDate.substring(6, 8);
 					%>
 					<tr>
-						<td width="70"><%=noticeDto.getIdx() %></td>
-						<td width="500"><a href="#"><%=noticeDto.getTitle() %></a></td>
-						<td width="120"><%=noticeDto.getAuthor() %></td>
-						<td width="100"><%=year+"-"+month+"-"+date %></td>
-						<td width="100"><%=noticeDto.getHit() %></td>
+						<td width="70"><%=noticeDto.getIdx()%></td>
+						<td width="500"><a href="#"><%=noticeDto.getTitle()%></a></td>
+						<td width="120"><%=noticeDto.getAuthor()%></td>
+						<td width="100"><%=year + "-" + month + "-" + date%></td>
+						<td width="100"><%=noticeDto.getHit()%></td>
 					</tr>
 					<%
-						}
+					}
 					%>
-					
+
 				</tbody>
 			</table>
 			<div id="paging">
-				<a target="iframe1" href="notice.jsp?seletedPage=1">처음</a>
-				<a target="iframe1" href="#">이전</a>
-				<a target="iframe1" href="#">1</a>
-				<a target="iframe1" href="#">2</a>
-				<a target="iframe1" href="#">3</a>
-				<a target="iframe1" href="#">4</a>
-				<a target="iframe1" href="#">5</a>
-				<a target="iframe1" href="#">다음</a>
-				<a target="iframe1" href="#">끝</a>
+				<%
+				if (totalPost > 0) {
+					if (pageVO.isPrev()) {
+				%>
+				<a target="iframe1" href="notice.jsp?currentPage=1">처음</a> <a
+					target="iframe1"
+					href="notice.jsp?currentPage=<%=pageVO.getFirstPage() - 1%>">이전</a>
+				<%
+				}
+				for (int i = pageVO.getFirstPage(); i <= pageVO.getLastPage(); i++) {
+				%>
+				<a target="iframe1" href="notice.jsp?currentPage=<%=i%>"><%=i%></a>
+				<%
+				}
+				if (pageVO.isNext()) {
+				%>
+				<a target="iframe1"
+					href="notice.jsp?currentPage=<%=pageVO.getLastPage() + 1%>">다음</a> <a
+					target="iframe1"
+					href="notice.jsp?currentPage=<%=pageVO.getEndPage()%>">끝</a>
+				<%
+				}
+				}
+				%>
 			</div>
 			<div align="right">
 				<input id="noticeWrite" type="button" value="글쓰기"
