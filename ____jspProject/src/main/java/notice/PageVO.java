@@ -18,16 +18,13 @@ public class PageVO {
 		this.totalPost = totalPost;
 
 		this.lastPage = (int) Math.ceil((double) this.currentPage / pagination) * pagination;
+		this.firstPage = (this.lastPage/pagination-1)*pagination+1;
 		this.endPage = (int) Math.ceil((double) totalPost / postCount);
 		if (this.lastPage > this.endPage) {
 			this.lastPage = this.endPage;
 		}
-		this.firstPage = this.lastPage - pagination + 1;
-		if(this.firstPage<1) {
-			this.firstPage = 1;
-		}
 
-		this.prev = this.firstPage > 1; // 첫번째 페이지네이션 번호가 1보다 크면 이전 페이지가 존재함.
+		this.prev = this.firstPage > pagination; // 첫번째 페이지네이션 번호가 페이지네이션보다 크면 이전 페이지가 존재함.
 		this.next = this.lastPage < this.endPage; // 마지막 페이지네이션 번호가 마지막 페이지 보다 작으면 다음 페이지가 존재함
 	}
 
@@ -38,7 +35,7 @@ public class PageVO {
 	public int getFirstPage() {
 		return firstPage;
 	}
-	
+
 	public int getEndPage() {
 		return endPage;
 	}
@@ -53,13 +50,13 @@ public class PageVO {
 
 	@Override
 	public String toString() {
-		return "PageVO [currentPage=" + currentPage + ", postCount=" + postCount + ", totalPost=" + totalPost + ", pagination="
-				+ pagination + ", lastPage=" + lastPage + ", firstPage=" + firstPage + ", endPage=" + endPage
-				+ ", prev=" + prev + ", next=" + next + "]";
+		return "PageVO [currentPage=" + currentPage + ", postCount=" + postCount + ", totalPost=" + totalPost
+				+ ", pagination=" + pagination + ", lastPage=" + lastPage + ", firstPage=" + firstPage + ", endPage="
+				+ endPage + ", prev=" + prev + ", next=" + next + "]";
 	}
 
 	public static void main(String[] args) {
-		PageVO pageVO = new PageVO(1, 10, 0);
+		PageVO pageVO = new PageVO(6, 10, 66);
 		System.out.println(pageVO);
 	}
 }

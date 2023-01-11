@@ -27,45 +27,45 @@ public class Dao {
 	private Connection conn = getConnect();
 
 	private Connection getConnect() {
-		try {
-			Class.forName("com.mysql.cj.jdbc.Driver");
-			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/thisisjava", "java", "mysql");
-			System.out.println("DB 접속!");
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 //		try {
-//			Properties prop = new Properties();
-//			String path = Dao.class.getResource("db.properties").getPath();
-//			path = URLDecoder.decode(path, "utf-8");
-//			prop.load(new FileReader(path));
-//			String driver = prop.getProperty("driver");
-//			String url = prop.getProperty("url");
-//			String user = prop.getProperty("user");
-//			String password = prop.getProperty("password");
-//			Class.forName(driver);
-//			conn = DriverManager.getConnection(url, user, password);
-//			System.out.println("DB연결 성공!");
-//		} catch (IOException | SQLException | ClassNotFoundException e) {
+//			Class.forName("com.mysql.cj.jdbc.Driver");
+//			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/thisisjava", "java", "mysql");
+//			System.out.println("DB 접속!");
+//		} catch (Exception e) {
 //			// TODO Auto-generated catch block
 //			e.printStackTrace();
 //		}
+		try {
+			Properties prop = new Properties();
+			String path = Dao.class.getResource("db.properties").getPath();
+			path = URLDecoder.decode(path, "utf-8");
+			prop.load(new FileReader(path));
+			String driver = prop.getProperty("driver");
+			String url = prop.getProperty("url");
+			String user = prop.getProperty("user");
+			String password = prop.getProperty("password");
+			Class.forName(driver);
+			conn = DriverManager.getConnection(url, user, password);
+			System.out.println("DB연결 성공!");
+		} catch (IOException | SQLException | ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return conn;
 	}
 
 	public List<NoticeDto> notice_selectAll(int selectedPage) {
 		List<NoticeDto> list = new ArrayList<NoticeDto>();
-		String sql = "select *\n"
-				+ "from(\n"
-				+ "select @rownum:=@rownum+1 rn, a.*\n"
-				+ "from notice a\n"
-				+ "where (@rownum:=0)=0 order by a.idx desc\n"
-				+ ")list\n"
-				+ "where rn>? and rn<=?";
-//		String sql = "select *\r\n" + "from(\r\n" + "    select rownum rn, a.*\r\n"
-//				+ "    from (select idx, author, title, content, fileName, createDate, hit\r\n"
-//				+ "            from notice order by idx desc) a\r\n" + "    )\r\n" + "where rn > ? and rn <= ?";
+//		String sql = "select *\n"
+//				+ "from(\n"
+//				+ "select @rownum:=@rownum+1 rn, a.*\n"
+//				+ "from notice a\n"
+//				+ "where (@rownum:=0)=0 order by a.idx desc\n"
+//				+ ")list\n"
+//				+ "where rn>? and rn<=?";
+		String sql = "select *\r\n" + "from(\r\n" + "    select rownum rn, a.*\r\n"
+				+ "    from (select idx, author, title, content, fileName, createDate, hit\r\n"
+				+ "            from notice order by idx desc) a\r\n" + "    )\r\n" + "where rn > ? and rn <= ?";
 		try {
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, (selectedPage - 1) * 10);
@@ -73,7 +73,6 @@ public class Dao {
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				int idx = rs.getInt("idx");
-				System.out.println("idx >>> " + idx);
 				String author = rs.getString("author");
 				String title = rs.getString("title");
 				String content = rs.getString("content");

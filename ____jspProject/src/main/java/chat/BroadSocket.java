@@ -37,18 +37,5 @@ public class BroadSocket {
     public void onClose(Session session) {
     	System.out.println("onClose >>> " + session);
         clients.remove(session);
-        
-        synchronized(clients) {
-            for(Session client : clients) {
-                if(!client.equals(session)) {
-                    try {
-						client.getBasicRemote().sendText("퇴|장");
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-                }
-            }
-        }
     }
 }
